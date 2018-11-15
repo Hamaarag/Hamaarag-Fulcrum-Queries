@@ -18,10 +18,11 @@ SELECT
   observations.foliage,
   observations.flowers,
   observations.pods,
+  observations."pods_on_ground_0_3" AS "pods on ground",
   observations.pelicosepalus_acaciae,
-  observations.ndvi_calibration,
-  observations.ndvi_picture,
-  observations.rgb_picture,
+  COALESCE (observations.ndvi_calibration, CAST(observations.ndvi_calibration_int AS CHAR(10))) AS "ndvi_calibration",
+  COALESCE (observations.ndvi_picture, CAST(observations.ndvi_picture_int AS CHAR(10))) AS "ndvi_picture",
+  COALESCE (observations.rgb_picture, CAST(observations.rgb_picture_int AS CHAR(10))) AS "rgb_picture",
   observations.photos,
   observations.browsing,
   observations.lowest_leaf_s_cm,
@@ -46,4 +47,4 @@ FROM "Maarag Acacias" main
 LEFT JOIN "Maarag Acacias/acacia_observations" observations
 USING(_record_id)
 
-WHERE main.site = 'Shita'
+--WHERE main.site = 'Shita'
