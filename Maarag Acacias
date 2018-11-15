@@ -1,12 +1,13 @@
 -- main: Maarag Acacias
 --	observations :Maarag Acacias/acacia_observations
 
--- Acacia Observations V1.1
+-- Acacia Observations V1.2
 SELECT
   main._status,
   main.site,
   main.tree_id,
-  main.sp AS "species",
+  --main.sp AS "species",
+  COALESCE (main.species, main.sp) AS "species_test",
   main.stream,
   main.plot_orientation,
   main._latitude AS latitude,
@@ -44,7 +45,7 @@ SELECT
   observations.remarks
 
 FROM "Maarag Acacias" main
-LEFT JOIN "Maarag Acacias/acacia_observations" observations
+INNER JOIN "Maarag Acacias/acacia_observations" observations
 USING(_record_id)
 
 --WHERE main.site = 'Shita'
