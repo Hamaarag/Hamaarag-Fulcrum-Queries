@@ -1,0 +1,22 @@
+-- Fulcrum Export tool for leasing car app
+-- version 1.2
+
+SELECT
+to_char(date_trunc('day', main.date_start), 'YYYY-MM-DD') AS תאריך,
+main.driver_name AS שם_הנהג,
+main.organization AS ארגון,
+COALESCE(main.deshe_project, main.hamaarag_project) AS פרוייקט,
+main.trip_origin AS מוצא,
+main.trip_destination AS יעד,
+main.purpose AS מטרה,
+main.trip_end AS נקודת_סיום,
+to_char(date_trunc('minute', main.time_start), 'HH24:MI') AS זמן_התחלה,
+main.km_start AS קמ_התחלה,
+to_char(date_trunc('minute', main.time_end), 'HH24:MI') AS זמן_סיום,
+main.km_end AS קמ_סיום
+
+FROM "Suzuki 5149686" main
+
+WHERE main.date_start BETWEEN '2018-08-01' AND '2018-08-31'
+
+Order by main.date_start
