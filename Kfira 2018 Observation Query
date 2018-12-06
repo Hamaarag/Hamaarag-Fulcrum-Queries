@@ -2,7 +2,7 @@
 --	season:Kfira/monitoring_event
 --		observations:Kfira/reptile_observations
 
--- Kfira
+-- Kfira V 1.1
 SELECT
   main.point_name,
   main.habitat,
@@ -48,7 +48,7 @@ SELECT
 FROM "Kfira" main
 INNER JOIN "Kfira/monitoring_event" season
 USING(_record_id)
-INNER JOIN "Kfira/reptile_observations" observations
+LEFT JOIN "Kfira/reptile_observations" observations
 ON season._child_record_id = observations._parent_id
 
 WHERE season.date_place > '2018-01-01'
