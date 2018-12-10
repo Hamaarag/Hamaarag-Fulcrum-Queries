@@ -1,13 +1,13 @@
 -- main: Maarag Acacias
 --	observations :Maarag Acacias/acacia_observations
 
--- Acacia Observations V1.2
+-- Acacia Observations V1.3
 SELECT
   main._status,
   main.site,
   main.tree_id,
   --main.sp AS "species",
-  COALESCE (main.species, main.sp) AS "species_test",
+  COALESCE (main.species, main.sp) AS "species",
   main.stream,
   main.plot_orientation,
   main._latitude AS latitude,
