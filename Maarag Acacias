@@ -1,12 +1,12 @@
 -- main: Maarag Acacias
 --	observations :Maarag Acacias/acacia_observations
 
--- Acacia Observations V1.3
+-- Acacia Observations V1.4
 SELECT
-  main._status,
+--main._status,
   main.site,
   main.tree_id,
-  --main.sp AS "species",
+--main.sp AS "species",
   COALESCE (main.species, main.sp) AS "species",
   main.stream,
   main.plot_orientation,
@@ -24,7 +24,7 @@ SELECT
   COALESCE (observations.ndvi_calibration, CAST(observations.ndvi_calibration_int AS CHAR(10))) AS "ndvi_calibration",
   COALESCE (observations.ndvi_picture, CAST(observations.ndvi_picture_int AS CHAR(10))) AS "ndvi_picture",
   COALESCE (observations.rgb_picture, CAST(observations.rgb_picture_int AS CHAR(10))) AS "rgb_picture",
-  observations.photos,
+--observations.photos,
   observations.browsing,
   observations.lowest_leaf_s_cm,
   observations.browsing_height_s,
@@ -48,4 +48,15 @@ FROM "Maarag Acacias" main
 INNER JOIN "Maarag Acacias/acacia_observations" observations
 USING(_record_id)
 
+-- Filters
+
+-- By Site:
+-- List of available sites
+-- TODO after fix
+
 --WHERE main.site = 'Shita'
+
+-- By Date:
+-- Date Range in YYYY-MM-DD format, [begin, end] 
+
+-- WHERE observations.date BETWEEN '2018-11-01' AND '2018-12-10'
