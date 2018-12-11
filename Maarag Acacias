@@ -49,12 +49,12 @@ INNER JOIN "Maarag Acacias/acacia_observations" observations
 USING(_record_id)
 
 -- Filters
-
+WHERE
 -- By Site:
 -- List of available sites
 -- TODO after fix
 
---WHERE main.site = 'Shita'
+-- main.site LIKE 'Sh%t%'
 
 -- By Date:
 -- Date Range in YYYY-MM-DD format, [begin, end] 
