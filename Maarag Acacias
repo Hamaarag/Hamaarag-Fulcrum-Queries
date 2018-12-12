@@ -1,7 +1,7 @@
 -- main: Maarag Acacias
 --	observations :Maarag Acacias/acacia_observations
 
--- Acacia Observations V1.4
+-- Acacia Observations V1.5
 SELECT
 --main._status,
   main.site,
@@ -48,13 +48,14 @@ FROM "Maarag Acacias" main
 INNER JOIN "Maarag Acacias/acacia_observations" observations
 USING(_record_id)
 
--- Filters
-WHERE
+-- Filters.
+-- To activate a filter, remove the preceeding -- from the row with WHERE 
+
 -- By Site:
 -- List of available sites
 -- TODO after fix
 
--- main.site LIKE 'Sh%t%'
+-- WHERE main.site LIKE 'Sh%t%'
 
 -- By Date:
 -- Date Range in YYYY-MM-DD format, [begin, end] 
