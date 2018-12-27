@@ -34,32 +34,26 @@ SELECT
   observations._latitude AS observation_lat,
   observations._latitude AS observation_lon,
   observations.protocol_mounds AS protocol,
-  to_char(date_trunc('minute', observations.time_mounds), 'HH24:MI') AS time mounds,
-  to_char(date_trunc('day', observations.date_mounds), 'YYYY-MM-DD') AS date mounds,
+  to_char(date_trunc('minute', observations.time_mounds), 'HH24:MI') AS time_mounds,
+  to_char(date_trunc('day', observations.date_mounds), 'YYYY-MM-DD') AS date_mounds,
   
   
   observations.activity_mounds AS activity,
   observations.species_mounds AS species,
-  observations.distance_nearest_mounds AS distance,
-  observations.obs_snout_len AS snout_length,
-  observations.obs_tail_len AS tail_length,
-  observations.tail AS tail,
-  observations.obs_regentail_len AS regentail_length,
-  observations.obs_ind_mass AS individual_mass,
-  observations.assumed_measurement AS assumed_measurement,
-  observations.oiled_substrate AS oiled_substrate,
-  observations.material AS material,
-  observations.orientation AS orientaion,
-  observations.photo_start AS photo_start,
-  observations.photo_end AS photo_end,
-  observations.camera_name AS camera_name,
-  observations.obs_notes AS notes,
-  observations.ignore as tracks_trail_no
+  observations.distance_nearest_mounds AS distance_nearest,
+  observations.distance_between_mounds AS distance_between,
+  observations.photo_start_mounds,
+  observations.photo_end_mounds,
+  observations.camera_name_mounds,
+  observations.excavated_mounds,
+  observations.collected_mounds,
+  observations.comments_mounds
+
 
 FROM "Evrona_Reptiles_2017" main
 LEFT JOIN "Evrona_Reptiles_2017/season" season
 USING(_record_id)
-LEFT JOIN "Evrona_Reptiles_2017/reptile_observations" observations
+LEFT JOIN "Evrona_Reptiles_2017/reptile_mounds" observations
 ON season._child_record_id = observations._parent_id
 
 WHERE season.date_r > '2018-01-01'
