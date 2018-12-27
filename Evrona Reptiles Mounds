@@ -1,0 +1,65 @@
+-- main:Evrona_Reptiles_2017
+--	season:Evrona_Reptiles_2017/season
+--		observations:Evrona_Reptiles_2017/reptile_observations
+--		tracks_trails:Evrona_Reptiles_2017/reptile_tracks_trails
+--		occasional:Evrona_Reptiles_2017/reptile_occ_in_obs
+--    mounds:Evrona_Reptiles_2017/reptile_mounds
+
+-- Evrona Reptiles Mounds V 0.1
+SELECT
+  main.sampling_point,
+  main.mound_number,
+  main.site_disturbances,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  main._geometry AS geometry,
+  --season.date_place,
+  to_char(date_trunc('day', season.date_r), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', season.observation_start_time), 'HH24:MI') AS time_start,
+  to_char(date_trunc('minute', season.observation_end_time), 'HH24:MI') AS time_end,
+  season.type_r AS type,
+  season.temp_sun,
+  season.temp_oil,
+  season.temp_shade,
+  season.weather,
+  season.total_observers,
+  season.monitors_name AS monitor_names_old,
+  season.monitor_names_new,
+  season._latitude AS season_lat,
+  season._longitude AS season_lon,
+  
+  observations._child_record_id,
+  observations._latitude AS observation_lat,
+  observations._latitude AS observation_lon,
+  observations.protocol_mounds AS protocol,
+  to_char(date_trunc('minute', observations.time_mounds), 'HH24:MI') AS time mounds,
+  to_char(date_trunc('day', observations.date_mounds), 'YYYY-MM-DD') AS date mounds,
+  
+  
+  observations.activity_mounds AS activity,
+  observations.species_mounds AS species,
+  observations.distance_nearest_mounds AS distance,
+  observations.obs_snout_len AS snout_length,
+  observations.obs_tail_len AS tail_length,
+  observations.tail AS tail,
+  observations.obs_regentail_len AS regentail_length,
+  observations.obs_ind_mass AS individual_mass,
+  observations.assumed_measurement AS assumed_measurement,
+  observations.oiled_substrate AS oiled_substrate,
+  observations.material AS material,
+  observations.orientation AS orientaion,
+  observations.photo_start AS photo_start,
+  observations.photo_end AS photo_end,
+  observations.camera_name AS camera_name,
+  observations.obs_notes AS notes,
+  observations.ignore as tracks_trail_no
+
+FROM "Evrona_Reptiles_2017" main
+LEFT JOIN "Evrona_Reptiles_2017/season" season
+USING(_record_id)
+LEFT JOIN "Evrona_Reptiles_2017/reptile_observations" observations
+ON season._child_record_id = observations._parent_id
+
+WHERE season.date_r > '2018-01-01'
