@@ -4,7 +4,7 @@
 -- Acacia Observations V1.5
 SELECT
 --main._status,
-  main.site,
+  COALESCE (main.site_new, main.site) AS "site",
   main.tree_id,
 --main.sp AS "species",
   COALESCE (main.species, main.sp) AS "species",
