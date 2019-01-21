@@ -1,0 +1,54 @@
+-- main: Eco Corridors
+--	Observations: Eco Corridors/track_trails_observations
+
+-- Eco Corridors All V.1 NOTE TYPOS
+SELECT
+-- Main Fields
+  main.corridor,
+  main.protocol,
+  main.point_name,
+  main.distance,
+  main.monitors,
+  
+-- Auto Fields
+  main._status,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  
+-- Camera Traps Section
+  to_char(date_trunc('day', main.placement_date), 'YYYY-MM-DD') AS placement_date_camera,
+  to_char(date_trunc('minute', main.placement_time), 'HH24:MI') AS placement_time_camera,
+  main.camera_type,
+  main.camera_name,
+  main.camera_height_cm_above_ground AS camera_height,
+  main.camera_azimuth,
+  to_char(date_trunc('day', main.end_date), 'YYYY-MM-DD') AS end_date_camera,
+  to_char(date_trunc('minute', main.end_time), 'HH24:MI') AS end_time_camera,
+  
+-- Track Plates Section
+  to_char(date_trunc('day', main.placement_date_plates), 'YYYY-MM-DD') AS placement_date_plate,
+  to_char(date_trunc('minute', main.placement_time_plates), 'HH24:MI') AS placement_time_plate,
+  main.name_plates,
+  to_char(date_trunc('day', main.collection_date_plates), 'YYYY-MM-DD') AS end_date_plate,
+  to_char(date_trunc('minute', main.collection_time_plates), 'HH24:MI') AS end_time_plate,
+  main.species_plates,
+  main.species_other_plates,
+  main.bait_plates,
+  main.status_plates,
+  
+--Track Trails Section
+  to_char(date_trunc('day', main.placement_date_track), 'YYYY-MM-DD') AS date_track,
+  to_char(date_trunc('minute', main.track_start_time), 'HH24:MI') AS start_time_track,
+  to_char(date_trunc('minute', main.track_end_time), 'HH24:MI') AS end_time_track,
+  main.start_end_position,
+  main."track_quality_1_lowest" AS "track_quality",
+  main.remarks,
+ 
+  observations.track_trails_specices AS species,
+  observations.number_of_individuals,
+  observations.track_azimuth
+
+FROM "Eco Corrdiors" main
+LEFT JOIN "Eco Corrdiors/track_trails_observation" observations
+USING(_record_id)
