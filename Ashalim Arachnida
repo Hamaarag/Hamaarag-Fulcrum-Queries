@@ -1,0 +1,71 @@
+-- main:Ashalim Arachnida
+--	season:Ashalim Arachnida/sampling_event
+--		observations:Ashalim Arachnida/observations
+
+-- Ashalim Arachnida Observations V 1.0
+SELECT
+--Main Fields
+  main.stream,
+  main.type,
+  main.habitat,
+  main.site,
+  main.plot,
+  
+  
+--Auto Fields  
+  main._status AS status,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  main._geometry AS geometry,
+
+--Season Fields
+  season.monitors_name,
+  to_char(date_trunc('day', season.date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', season.time_start), 'HH24:MI') AS    	time_start,
+  to_char(date_trunc('minute', season.time_end), 'HH24:MI') AS  	time_end,
+  season.sampling_protocol,
+  season.site_disturbances,
+  season.general_event_remarks,
+
+--Weather Optional
+  season.temp AS temperature,
+  season.exact_temp AS exact_temperature,
+  season.rh,
+  season.weather AS weather_remarks,
+  season.wind_yn,
+  season.wind_speed,
+  season.cloud_cover,
+
+--Observations
+  observations._child_record_id,
+  observations._latitude AS observation_lat,
+  observations._latitude AS observation_lon,
+  observations.protocl_val,
+  
+  observations.species_ly AS species_lycosidae,
+  observations.species_sc AS species_scorpions,
+  observations.species_web,
+  observations.sex,
+  observations.count,
+  observations.notes_activity,
+  observations.microhabitat_notes,
+  observations.collected,
+  observations.sample_id,
+  observations.observation_remarks,
+  --web
+  observations.presence_on_web AS web_presence,
+  observations.web_horizontal_cm,
+  observations.web_vertical_cm,
+  observations.web_depth_cm,
+  observations.web_placement
+
+--Join
+
+FROM "Ashalim Arachnida" main
+INNER JOIN "Ashalim Arachnida/sampling_event" season
+USING(_record_id)
+INNER JOIN "Ashalim Arachnida/observations" observations
+ON season._child_record_id = observations._parent_id
+
+--WHERE season.date_r > '2018-01-01'
