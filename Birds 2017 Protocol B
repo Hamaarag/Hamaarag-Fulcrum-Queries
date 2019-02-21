@@ -1,0 +1,33 @@
+-- main: Birds 2017
+--	Observations :Birds 2017/bird_observations_b
+
+-- Bird Observations
+SELECT
+  main._status,
+  main.unit,
+  main.site,
+  main.proximity,
+  main.habitat,
+  main.point_name,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  to_char(date_trunc('day', main.date_obs), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', main.time_obs), 'HH24:MI') AS time_start,
+  main.monitors_name,
+  main.comment_weather,
+  main.comment_disturbances,
+
+  
+  observations.specie_b AS species,
+
+  observations."number_observed_0_20m_radius_b" AS "0_20_radius",
+  observations."number_observed_20_100m_radius_b" AS "20_100_radius",
+  observations."number_observed_100_250m_radius_b" AS "100_250_radius",
+  observations."number_observed_over_250m_radius_b" AS "over_250_radius",
+  observations.notes_b AS notes,
+  'B' AS protocol 
+
+FROM "Birds 2017" main
+LEFT JOIN "Birds 2017/bird_observations_b" observations
+USING(_record_id)
