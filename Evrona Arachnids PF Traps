@@ -1,0 +1,71 @@
+-- Evrona Arachnida PF Traps
+-- main:Evrona Arachnids
+--	season:Evrona Arachnids/sampling_event
+--		observations:Evrona Arachnids/arachnida_pft_observations
+--		observations:Evrona Arachnids/sahastata_observations
+--		observations:Evrona Arachnids/sahastata_complex
+--		observations:Evrona Arachnids/lycosidae_observations
+--		observations:Evrona Arachnids/scorpion_observations
+
+-- Evrons Arachnida PF Traps V 1.0
+SELECT
+--Main Fields
+  main.point_name,
+  main.pft_number,
+  
+--Main Auto Fields  
+  main._status AS status,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+--Season Fields
+  season.monitors_name,
+  to_char(date_trunc('day', season.date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', season.time_start), 'HH24:MI') AS    	time_start,
+  to_char(date_trunc('minute', season.time_end), 'HH24:MI') AS  	time_end,
+  season.site_disturbances,
+  season.general_event_remarks,
+
+--Season Weather Optional
+  season.temp AS temperature,
+  season.weather AS weather_remarks,
+  season.wind_yn,
+  
+--Season Pitfall Traps Counts
+  season.spider_count_under AS under_spiders,
+  season.acari_count_under AS under_acari,
+  season.scorpions_count_under AS under_scorpions,
+  season.pseudoscorpions_count_under AS under_pseudoscorpions,
+  season.solifugae_count_under AS under_solifugae,
+  season.others_count_under AS under_others,
+  season.others_info_under AS under_others_info,
+  
+  season.spiders_count_near AS near_spiders, --fix name
+  season.acari_count_near AS near_acari,
+  season.scorpions_count_near AS near_scorpions,
+  season.pseudosorpions_count_near AS near_pseudoscorpions, --fix 
+  season.solifugae_count_near AS near_solifugae,
+  season.others_count_near AS near_others,
+  season.others_info_near AS near_others_info,  
+
+--Observations Fields
+  observations.species_latin AS species,
+  observations.count_arachnida AS count,
+  observations.notes_arachnida AS notes,
+  observations.protocol_a AS protocol,
+  
+--Observations Auto Fields
+  observations._child_record_id,
+  observations._latitude AS observation_lat,
+  observations._latitude AS observation_lon
+
+--Join
+FROM "Evrona Arachnids" main
+INNER JOIN "Evrona Arachnids/sampling_event" season
+USING(_record_id)
+LEFT JOIN "Evrona Arachnids/arachnida_pft_observations" observations
+ON season._child_record_id = observations._parent_id
+
+-- Clause
+WHERE main._status = 'PF Trap'
