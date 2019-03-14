@@ -1,0 +1,58 @@
+-- main:Evrona Arachnids
+--	event:Evrona Arachnids/sampling_event
+--      pft:Evrona Arachnids/arachnida_pft_observations
+--		sahastata:Evrona Arachnids/sahastata_observations
+--      lycosidae:Evrona Arachnids/lycosidae_observations
+--      scorpions:Evrona Arachnids/scorpion_observations
+
+
+-- Evrona Arachnids - Scorpions V1.0
+SELECT
+  main.point_name,
+  main.pft_number,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  main._geometry AS geometry,
+  
+  
+  to_char(date_trunc('day', event.date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', event.time_start), 'HH24:MI') AS time_start,
+  event.monitors_name,
+  event.spider_count_under AS spiders_count_under,
+  event.acari_count_under,
+  event.scorpions_count_under,
+  event.pseudoscorpions_count_under,
+  event.solifugae_count_under,
+  event.others_count_under,
+  event.others_info_under,
+  
+  event.spiders_count_near,
+  event.acari_count_near,
+  event.scorpions_count_near,
+  event.pseudosorpions_count_near AS pseudoscorpions_count_near,
+  event.solifugae_count_near,
+  event.others_count_near,
+  event.others_info_near,
+  
+  event.wind_yn, 
+  event.temp,
+  event.weather,
+  event.site_disturbances,
+  
+  to_char(date_trunc('day', event.collection_date), 'YYYY-MM-DD') AS collection_date,
+  to_char(date_trunc('minute', event.time_end), 'HH24:MI') AS time_end,
+  
+  to_char(date_trunc('day', scorpions._created_at), 'YYYY-MM-DD') AS creation_date,
+  to_char(date_trunc('minute', scorpions._created_at), 'HH24:MI') AS creation_time,
+  scorpions.species AS scorpions_species,
+  scorpions.count AS scorpions_count,
+  scorpions.notes AS scorpions_notes
+
+
+FROM "Evrona Arachnids" main
+LEFT JOIN "Evrona Arachnids/sampling_event" event
+USING(_record_id)
+INNER JOIN "Evrona Arachnids/scorpion_observations" scorpions
+ON event._child_record_id = scorpions._parent_id
