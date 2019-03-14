@@ -1,0 +1,64 @@
+-- Evrona Arachnida PF Traps
+-- main:Evrona Arachnids
+--	season:Evrona Arachnids/sampling_event
+--		observations:Evrona Arachnids/arachnida_pft_observations
+--		observations:Evrona Arachnids/sahastata_observations
+--		observations:Evrona Arachnids/sahastata_complex
+--		observations:Evrona Arachnids/lycosidae_observations
+--		observations:Evrona Arachnids/scorpion_observations
+
+-- Evrons Arachnida Sahastata Complex V 1.0
+SELECT
+--Main Fields
+  main.point_name,
+  
+--Main Auto Fields  
+  main._status AS status,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+--Season Fields
+  season.monitors_name,
+  to_char(date_trunc('day', season.date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', season.time_start), 'HH24:MI') AS    	time_start,
+  to_char(date_trunc('minute', season.time_end), 'HH24:MI') AS  	time_end,
+  season.site_disturbances,
+  season.general_event_remarks,
+
+--Season Weather Optional
+  season.temp AS temperature,
+  season.weather AS weather_remarks,
+  season.wind_yn,
+
+--Sahastata Complex Data
+  season.control_or_burrow_complex,
+  season.burrow_length_cm,
+  season.burrow_width_cm,
+  season.burrow_height_max_cm,
+  season.burrow_height_min_cm,
+  season.spider_presence,
+  season.soil_hardness_max,
+  season.soil_hardness_min,
+  season.soil_type,
+  
+--Observations Fields
+  observations.object,
+  observations.object_description,
+  observations.distance_cm,
+  observations.protocol_sc AS protocol,
+  
+--Observations Auto Fields
+  observations._child_record_id,
+  observations._latitude AS observation_lat,
+  observations._latitude AS observation_lon
+
+--Join
+FROM "Evrona Arachnids" main
+INNER JOIN "Evrona Arachnids/sampling_event" season
+USING(_record_id)
+LEFT JOIN "Evrona Arachnids/sahastata_complex" observations
+ON season._child_record_id = observations._parent_id
+
+-- Clause
+WHERE main._status = 'Sahastata Complex'
