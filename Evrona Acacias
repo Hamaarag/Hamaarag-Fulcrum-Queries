@@ -1,0 +1,49 @@
+-- main: Evrona Acacias
+--	observations: Evrona Acacias/acacia_observations
+
+-- Evrona Acacias V1
+-- Main
+SELECT
+  main._status,
+  main.type,
+  main.plot,
+  main.tree_number,
+  main.sp AS "species",
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  
+-- Observations
+
+  to_char(date_trunc('day', observations.sampling_date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', observations.time), 'HH24:MI') AS time,  
+  observations.monitors,
+  observations.foliage,
+  observations.flowers,
+  observations.pods,
+
+  observations.ndvi_calibration, 
+  observations.ndvi_picture,
+  observations.rgb_picture,
+  
+--observations.photos,
+
+  observations.lowest_leaf_height_1 as "lowest_leaf_south",
+  observations.lowest_leaf_height_2 as "lowest_leaf_east",
+  observations.lowest_leaf_height_3 as "lowest_leaf_north",
+  observations.lowest_leaf_height_3 as "lowest_leaf_west",
+  observations.browsing_south_cm,
+  observations.browsing_east_cm,
+  observations.browsing_north_cm,
+  observations.browsing_west_cm,
+
+  observations.dendrometer,
+  observations.perimeter,
+  observations.height,
+  observations.canopy_n_s,
+  observations.canopy_e_w,
+  observations.loranthus,
+  observations.remarks
+
+FROM "Evrona Acacias" main
+INNER JOIN "Evrona Acacias/acacia_observations" observations
+USING(_record_id)
