@@ -38,3 +38,5 @@ LEFT JOIN "Megiddo Biosphere Reserve/monitoring_event" event
 USING(_record_id)
 LEFT JOIN "Megiddo Biosphere Reserve/observations" observations
 ON event._child_record_id = observations._parent_id
+
+WHERE main.class = 'Birds'
