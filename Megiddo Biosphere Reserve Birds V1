@@ -1,0 +1,40 @@
+-- main: Megiddo Biosphere Reserve
+--	event: Megiddo Biosphere Reserve/monitoring_event
+--		observations: Megiddo Biosphere Reserve/observations
+
+
+-- Megiddo Biosphere Reserve - Birds V1.0
+SELECT
+
+-- main
+  main.site,
+  main.class,
+  main.point_name,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+-- event
+  event.monitor_name,
+  event.event_remarks,
+  
+-- observations
+  to_char(date_trunc('day', observations.observation_date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', observations.observation_time), 'HH24:MI') AS time_start,
+  
+  observations.species_birds AS species,
+  observations."radius_0_100" AS "radius_0_100",
+  observations."radius_100_250" AS "radius_100_250",
+  observations.in_flight,
+  observations.nesting_indication,
+  observations.behaviour,
+  observations.observations_remarks AS observations_remarks,
+  observations._latitude AS observation_lat,
+  observations._latitude AS observation_lon
+
+FROM "Megiddo Biosphere Reserve" main
+LEFT JOIN "Megiddo Biosphere Reserve/monitoring_event" event
+USING(_record_id)
+LEFT JOIN "Megiddo Biosphere Reserve/observations" observations
+ON event._child_record_id = observations._parent_id
