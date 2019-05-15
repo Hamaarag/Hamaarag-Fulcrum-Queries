@@ -1,7 +1,7 @@
 -- main: Eco Corridors
 --	Observations: Eco Corridors/track_trails_observations
 
--- Eco Corridors All V.1 NOTE TYPOS
+-- Eco Corridors All V.1.1 NOTE TYPOS
 SELECT
 -- Main Fields
   main.corridor,
@@ -47,7 +47,9 @@ SELECT
  
   observations.track_trails_specices AS species,
   observations.number_of_individuals,
-  observations.track_azimuth
+  observations.track_azimuth,
+  observations._latitude AS obs_lat,
+  observations._longitude AS obs_lon
 
 FROM "Eco Corrdiors" main
 LEFT JOIN "Eco Corrdiors/track_trails_observation" observations
