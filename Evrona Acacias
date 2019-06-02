@@ -8,6 +8,7 @@ SELECT
   main.type,
   main.plot,
   main.tree_number,
+  main.tree_description,
   main.sp AS "species",
   main._latitude AS latitude,
   main._longitude AS longitude,
