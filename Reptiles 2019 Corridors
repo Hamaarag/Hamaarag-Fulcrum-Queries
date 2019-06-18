@@ -1,0 +1,43 @@
+-- main: Reptiles 2019
+--	Observations: Reptiles 2019/species_corridor_observations
+
+-- Corridor Observations
+SELECT
+  main._status,
+  main.corridor,
+  main.trail_name,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  to_char(date_trunc('day', main.date_corridor), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', main.time_start_corridor), 'HH24:MI') AS time_start,
+  to_char(date_trunc('minute', main.time_end_corridor), 'HH24:MI') AS time_end,
+  main.point_position_corridor AS "point_position",
+  main.weather_corridor AS "weather",
+  main.temp_shade_corridor AS "temp_shade",
+  main.temp_sun_corridor AS "temp_sun",
+
+  
+  CASE 
+  	WHEN array_length(observations.species_corridor, 1) = 3 THEN observations.species_corridor[3] 
+    WHEN array_length(observations.species_corridor, 1) = 2 THEN observations.species_corridor[2] 
+    ELSE observations.species_corridor[1] 
+  END AS species,
+  observations.sex_corridor AS sex,
+  observations.type_corridor AS type,
+  observations.activity_corridor AS activity,
+  observations.tail_corridor AS tail,
+  observations.sv_corridor AS sv,
+  observations.t_corridor AS t,
+  observations.regen_t_corridor regen_t,
+  observations.orientation_corridor AS orientation,
+  observations.substrate_corridor AS substrate,
+  observations.track_direction_corridor AS track_direction,
+  observations.individuals_corridor AS count,
+  observations.remarks  
+
+FROM "Reptiles 2019" main
+LEFT JOIN "Reptiles 2019/species_corridor_observations" observations
+USING(_record_id)
+
+WHERE main._status = 'Eco Corridor'
