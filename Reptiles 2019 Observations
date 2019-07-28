@@ -1,0 +1,48 @@
+-- main: Reptiles 2019
+--	Observations: Reptiles 2019/reptile_observations
+
+--  Observations
+SELECT
+  main._status,
+  main.unit,
+  main.site,
+  main.habitat,
+  main.proximity,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  to_char(date_trunc('day', main.date_start), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', main.time_start), 'HH24:MI') AS time_start,
+  to_char(date_trunc('day', main.date_collect), 'YYYY-MM-DD') AS date_end,
+  to_char(date_trunc('minute', main.time_collect), 'HH24:MI') AS time_end,
+  main.point_name AS "point_name",
+  main.weather AS "weather",
+  main.temp_shade AS "temp_shade",
+  main.temp_sun AS "temp_sun",
+  main.site_descrption AS "diturbance",
+  main.stones_flipped,
+
+ 
+  CASE 
+  	WHEN array_length(observations.species_latin, 1) = 3 THEN observations.species_latin[3] 
+    WHEN array_length(observations.species_latin, 1) = 2 THEN observations.species_latin[2] 
+    ELSE observations.species_latin[1] 
+  END AS species,
+  observations.protocol,
+  observations.parameters AS sex,
+  observations.status AS type,
+  observations.activity AS activity,
+  observations.tail AS tail,
+  observations.obs_snout_len AS sv,
+  observations.obs_tail_len AS t,
+  observations.obs_regentail_len regen_t,
+  observations.assumed_measurement,
+  observations.orientation,
+  observations.material AS substrate,
+  observations.obs_count,
+  observations.obs_notes
+
+
+FROM "Reptiles 2019" main
+INNER JOIN "Reptiles 2019/reptile_observations" observations
+USING(_record_id)
