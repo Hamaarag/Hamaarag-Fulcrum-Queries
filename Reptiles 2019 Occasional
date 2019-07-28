@@ -1,0 +1,50 @@
+-- main: Reptiles 2019
+--	Observations: Reptiles 2019/species_corridor_observations
+
+-- Corridor Observations
+SELECT
+  main._status,
+  main.unit,
+  main.site,
+  main.habitat,
+  main.proximity,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+  to_char(date_trunc('day', main.date_start), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', main.time_start), 'HH24:MI') AS time_start,
+  to_char(date_trunc('day', main.date_collect), 'YYYY-MM-DD') AS date_end,
+  to_char(date_trunc('minute', main.time_collect), 'HH24:MI') AS time_end,
+  main.point_name AS "point_name",
+  main.weather AS "weather",
+  main.temp_shade AS "temp_shade",
+  main.temp_sun AS "temp_sun",
+  main.site_descrption AS "diturbance",
+  main.stones_flipped,
+
+ 
+  CASE 
+  	WHEN array_length(observations.occ_species, 1) = 3 THEN observations.occ_species[3] 
+    WHEN array_length(observations.occ_species, 1) = 2 THEN observations.occ_species[2] 
+    ELSE observations.occ_species[1] 
+  END AS species,
+--  observations.protocol,
+  observations.occ_parameters AS sex,
+  observations.occ_status AS type,
+  observations.occ_activity AS activity,
+  observations.occ_tail AS tail,
+  observations.occ_snout_len AS sv,
+  observations.occ_tail_len AS t,
+  observations.occ_regentail_len regen_t,
+  observations.occ_assumed_measurement AS assumed_measurement,
+  observations.occ_orientation as orientation,
+  observations.occ_material AS substrate,
+  observations.occ_count,
+  observations.occ_notes
+
+
+FROM "Reptiles 2019" main
+INNER JOIN "Reptiles 2019/occ_reptile_observations" observations
+USING(_record_id)
+
+--WHERE main._status = 'Eco Corridor'
