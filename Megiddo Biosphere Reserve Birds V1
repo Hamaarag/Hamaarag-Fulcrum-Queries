@@ -31,7 +31,7 @@ SELECT
   observations.behaviour,
   observations.observations_remarks AS observations_remarks,
   observations._latitude AS observation_lat,
-  observations._latitude AS observation_lon
+  observations._longitude AS observation_lon
 
 FROM "Megiddo Biosphere Reserve" main
 LEFT JOIN "Megiddo Biosphere Reserve/monitoring_event" event
