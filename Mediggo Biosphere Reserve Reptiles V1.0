@@ -1,0 +1,59 @@
+-- main: Megiddo Biosphere Reserve
+--	event: Megiddo Biosphere Reserve/monitoring_event
+--		observations: Megiddo Biosphere Reserve/observations
+
+
+-- Megiddo Biosphere Reserve - Reptiles V1.0
+SELECT
+
+-- main
+  main.site,
+  main.class,
+  main.point_name,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+-- event
+  event.monitor_name,
+  event.event_remarks,
+  event.rock_count,
+  event.event_remarks,
+  
+-- observations
+  to_char(date_trunc('day', observations.observation_date), 'YYYY-MM-DD') AS date,
+  to_char(date_trunc('minute', observations.observation_time), 'HH24:MI') AS time_start,
+  
+  CASE 
+  WHEN array_length(observations.species_reptiles, 1) = 3 THEN observations.species_reptiles[3] 
+  WHEN array_length(observations.species_reptiles, 1) = 2 THEN observations.species_reptiles[2] 
+  ELSE observations.species_reptiles[1]
+  END AS species, 
+  
+  observations.reptiles_individuals,
+  observations.reptiles_parameters,
+  observations.reptiles_observation_type,
+  observations.reptiles_activity,
+  observations.reptiles_tail_status,
+  observations.reptiles_sv_mm,
+  observations.reptiles_tail_mm,
+  observations.reptiles_regenerated_tail_mm,
+  observations.reptiles_orientation,
+  observations.reptiles_substrate,
+  observations.reptiles_tail_mm,
+  observations.rock_length,
+  observations.rock_width,
+  observations.rsi,
+  
+  observations.observations_remarks AS observations_remarks,
+  observations._latitude AS observation_lat,
+  observations._longitude AS observation_lon
+
+FROM "Megiddo Biosphere Reserve" main
+INNER JOIN "Megiddo Biosphere Reserve/monitoring_event" event
+USING(_record_id)
+LEFT JOIN "Megiddo Biosphere Reserve/observations" observations
+ON event._child_record_id = observations._parent_id
+
+WHERE main.class = 'Reptiles'
