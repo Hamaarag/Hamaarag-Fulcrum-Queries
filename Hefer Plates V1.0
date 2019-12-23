@@ -1,0 +1,41 @@
+-- main: Hefer
+--	event: Hefer/monitoring_event
+
+
+
+-- Hefer - Plates V1.0
+SELECT
+
+-- main
+  main.protocol,
+  main.site,
+  main.point_name,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+-- event
+	
+  event.monitors,
+  event.event_remarks,
+-- Plates
+-- Placement
+  event._latitude AS placement_lat,
+  event._longitude AS placement_lon,
+  to_char(date_trunc('day', event.placement_date_plates), 'YYYY-MM-DD') AS date_start,
+  to_char(date_trunc('minute', event.placement_time_plates), 'HH24:MI') AS time_start,
+  event.name_plates,
+-- Collection 
+  to_char(date_trunc('day', event.collection_date_plates), 'YYYY-MM-DD') AS date_end,
+  to_char(date_trunc('minute', event.collection_time_plates), 'HH24:MI') AS time_end,
+  event.species_plates AS species,
+  event.species_other_plates AS species_other,
+  event.bait_plates,
+  event.status_plates
+
+FROM "Hefer" main
+INNER JOIN "Hefer/monitoring_event" event
+USING(_record_id)
+
+WHERE main.protocol = 'Plates'
