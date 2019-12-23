@@ -1,0 +1,49 @@
+-- main: Hefer
+--	event: Hefer/monitoring_event
+--   observations: Hefer/track_trails_observation
+
+
+
+-- Hefer - Track Trails V1.0
+SELECT
+
+-- main
+  main.protocol,
+  main.site,
+  main.point_name,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+-- event
+	
+  event.monitors,
+  event.event_remarks,
+-- Tracks
+-- General
+  event._latitude AS placement_lat,
+  event._longitude AS placement_lon,
+  to_char(date_trunc('day', event.placement_date_track), 'YYYY-MM-DD') AS date_start,
+  to_char(date_trunc('minute', event.track_start_time), 'HH24:MI') AS time_start,
+  event.start_end_position AS start_end,
+  event."track_quality_1_lowest" AS track_quality,
+-- Collection
+  to_char(date_trunc('minute', event.track_end_time), 'HH24:MI') AS time_end,
+  event.remarks AS remarks,
+  
+-- Observations  
+  observations.track_trails_specices AS species,
+  observations.number_of_individuals,
+  observations.track_azimuth
+
+
+
+FROM "Hefer" main
+INNER JOIN "Hefer/monitoring_event" event
+USING(_record_id)
+INNER JOIN "Hefer/track_trails_observation" observations
+ON event._child_record_id = observations._parent_id
+
+
+WHERE main.protocol = 'Trails'
