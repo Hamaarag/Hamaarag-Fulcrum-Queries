@@ -1,0 +1,40 @@
+-- main: Megiddo Biosphere Reserve
+--	event: Megiddo Biosphere Reserve/monitoring_event
+
+
+-- Megiddo Biosphere Reserve - Mammals V1.0
+SELECT
+
+-- main
+  main.site,
+  main.class,
+  main.point_name,
+  main._status AS zone,
+  main._record_id AS record_id,
+  main._latitude AS latitude,
+  main._longitude AS longitude,
+
+-- event
+  event.monitor_name,
+  event.event_remarks,
+  
+-- placement
+  event._latitude AS placemennt_lat,
+  event._longitude AS placement_lon,
+  to_char(date_trunc('day', event.date), 'YYYY-MM-DD') AS placement_date,
+  to_char(date_trunc('minute', event.time_mammals), 'HH24:MI') AS placement_time,
+  event.camera_type,
+  event.camera_name,
+  event.camera_height_cm,
+  event.camera_azimuth,
+  
+-- collection
+  to_char(date_trunc('day', event.date_end), 'YYYY-MM-DD') AS collection_date,
+  to_char(date_trunc('minute', event.time_end), 'HH24:MI') AS collection,
+  event.camera_status
+
+FROM "Megiddo Biosphere Reserve" main
+INNER JOIN "Megiddo Biosphere Reserve/monitoring_event" event
+USING(_record_id)
+
+WHERE main.class = 'Mammals'
