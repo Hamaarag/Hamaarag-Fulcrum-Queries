@@ -1,0 +1,20 @@
+from fulcrum import Fulcrum
+
+fulcrum = Fulcrum(key='MyKey')
+clist = fulcrum.choice_lists.search()
+
+# Define Constant Variables
+CL = 'choice_lists'
+
+# Print All Choice Lists
+print ('Choice List Name: Description')
+for i, item in enumerate(clist[CL]):
+    print (i,clist[CL][i]['name']+': '+clist[CL][i]['description'])
+
+# Select Choice List
+while True:
+j = int(input('Select Choice List to Export: '))
+
+# Print Choice List
+  for i, item in enumerate(clist[CL][j]['choices']):
+      print (clist[CL][j]['choices'][i]['label']+', '+clist[CL][j]['choices'][i]['value'])
