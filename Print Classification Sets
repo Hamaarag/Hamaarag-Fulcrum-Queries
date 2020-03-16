@@ -1,0 +1,26 @@
+from fulcrum import Fulcrum
+
+fulcrum = Fulcrum(key='MyKey')
+clset = fulcrum.classification_sets.search()
+
+# Define Constant Variables
+CS = 'classification_sets'
+CC = 'child_classifications'
+
+# Print All Classification Sets
+print ('Classification Set Name: Description')
+for i, item in enumerate(clset[CS]):
+    print (i,clset[CS][i]['name']+': '+clset[CS][i]['description'])
+    
+# Select Classification Set
+while True:
+    j = int(input('Select Classification Set to Export: '))
+
+# Print Classification Sets and Child Classification if Exists 
+    for i, item in enumerate(clset[CS][j]['items']):#[0]['value']):
+        print (clset[CS][j]['items'][i]['label']+', '+clset[CS][j]['items'][i]['value'])
+        try: #clset[CS][j]['items'][i][CC]:
+            for c, item in enumerate(clset[CS][j]['items'][i][CC]):
+                print (clset[CS][j]['items'][i][CC][c]['label']+', '+clset[CS][j]['items'][i][CC][c]['value'])
+        except:
+            pass
